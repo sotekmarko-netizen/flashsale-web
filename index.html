@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlashSale — Bleskové zľavy vo tvojom okolí</title>
+  <meta name="description" content="FlashSale prináša exkluzívne časovo obmedzené zľavy od podnikov vo tvojom okolí. Ušetri až 50% na jedle, wellness, fitness a ďalších službách." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0F0F0F;
+      --card: #1C1C1E;
+      --card2: #252527;
+      --text: #F2F2F2;
+      --sub: #ABABAB;
+      --muted: #6B7280;
+      --border: #2C2C2E;
+      --flash: #E63300;
+      --slot: #16A34A;
+      --promo: #D97706;
+      --pass: #7C3AED;
+      --green: #22C55E;
+      --orange: #FF6B00;
+      --accent: #E63300;
+      --wrap: 1100px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ── */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(15,15,15,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; gap: 32px; height: 60px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo-icon { width: 32px; height: 32px; background: var(--flash); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .logo em { color: var(--flash); font-style: normal; }
+    .nav-links { display: flex; gap: 24px; margin-left: auto; }
+    .nav-links a { font-size: 14px; color: var(--sub); transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { margin-left: 8px; background: var(--flash); color: #fff; font-size: 13px; font-weight: 700; padding: 7px 16px; border-radius: 999px; transition: opacity .2s; }
+    .nav-cta:hover { opacity: .85; }
+    @media(max-width:640px){ .nav-links { display:none; } }
+
+    /* ── HERO ── */
+    .hero { padding: 100px 0 80px; position: relative; overflow: hidden; }
+    .hero-glow { position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(230,51,0,.18) 0%, transparent 70%); pointer-events: none; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--flash); background: rgba(230,51,0,.12); border: 1px solid rgba(230,51,0,.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 24px; }
+    h1 { font-size: clamp(38px,6vw,68px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; margin-bottom: 20px; }
+    h1 span { color: var(--flash); }
+    .hero-sub { font-size: 18px; color: var(--sub); max-width: 540px; margin-bottom: 40px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 64px; }
+    .apple-badge { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #000; padding: 10px 22px; border-radius: 12px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
+    .apple-badge:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+    .apple-badge svg { flex-shrink: 0; }
+    .apple-badge .small { display: block; font-size: 10px; font-weight: 500; }
+    .apple-badge .big { display: block; font-size: 17px; line-height: 1.1; }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); color: var(--sub); padding: 10px 22px; border-radius: 12px; font-size: 15px; transition: border-color .2s, color .2s; }
+    .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+
+    /* ── LIVE DEALS DEMO ── */
+    .deals-demo { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; max-width: 920px; }
+    .deal-card { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.4); transition: transform .2s; cursor: pointer; }
+    .deal-card:hover { transform: translateY(-2px); }
+    .deal-emoji-area { height: 120px; display: flex; align-items: center; justify-content: center; position: relative; }
+    .deal-emoji { font-size: 52px; }
+    .type-badge { position: absolute; top: 10px; left: 10px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; }
+    .deal-body { padding: 14px 16px; }
+    .deal-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .deal-title { flex: 1; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .disc-badge { font-size: 12px; font-weight: 700; background: #F2F2F2; color: #111; padding: 2px 7px; border-radius: 6px; flex-shrink: 0; }
+    .deal-biz { font-size: 12px; color: var(--sub); margin-bottom: 10px; }
+    .price-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .orig-price { font-size: 13px; color: var(--muted); text-decoration: line-through; }
+    .final-price { font-size: 16px; font-weight: 700; }
+    .timer-wrap { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+    .timer-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); animation: pulse 1.2s ease-in-out infinite; }
+    .timer-text { font-size: 13px; font-weight: 600; color: var(--orange); font-variant-numeric: tabular-nums; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .progress-bg { height: 4px; background: #2C2C2E; border-radius: 999px; overflow: hidden; margin-bottom: 4px; }
+    .progress-bar { height: 4px; border-radius: 999px; background: #DC2626; }
+    .stock-text { font-size: 11px; color: var(--muted); }
+    .watching { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── STATS ── */
+    .stats-strip { display: flex; gap: 0; background: var(--card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .stat-item { flex: 1; padding: 20px; text-align: center; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-size: 28px; font-weight: 900; letter-spacing: -1px; color: var(--text); }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 80px 0; }
+    .section-head { text-align: center; margin-bottom: 52px; }
+    .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: var(--flash); background: rgba(230,51,0,.1); border: 1px solid rgba(230,51,0,.2); padding: 4px 12px; border-radius: 999px; margin-bottom: 16px; text-transform: uppercase; }
+    h2.section-title { font-size: clamp(26px, 4vw, 40px); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
+    .section-sub { font-size: 16px; color: var(--sub); max-width: 520px; margin: 0 auto; }
+
+    /* ── HOW IT WORKS ── */
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    @media(max-width:700px){ .how-grid { grid-template-columns: 1fr; } }
+    .how-side { background: var(--card); border-radius: 20px; padding: 32px; border: 1px solid var(--border); }
+    .how-side-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 20px; }
+    .how-step { display: flex; gap: 16px; margin-bottom: 24px; }
+    .how-step:last-child { margin-bottom: 0; }
+    .how-num { width: 32px; height: 32px; border-radius: 50%; background: var(--card2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--sub); flex-shrink: 0; margin-top: 2px; }
+    .how-num.accent { background: var(--flash); border-color: var(--flash); color: #fff; }
+    .how-step h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .how-step p { font-size: 13px; color: var(--sub); }
+
+    /* ── DEAL TYPES ── */
+    .types-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    @media(max-width:600px){ .types-grid { grid-template-columns: 1fr; } }
+    .type-card { background: var(--card); border-radius: 16px; padding: 24px; border: 1px solid var(--border); }
+    .type-icon { font-size: 28px; margin-bottom: 12px; }
+    .type-name { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+    .type-desc { font-size: 13px; color: var(--sub); }
+    .type-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin-bottom: 10px; }
+
+    /* ── BUSINESS FEATURES ── */
+    .biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media(max-width:800px){ .biz-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:500px){ .biz-grid { grid-template-columns: 1fr; } }
+    .biz-card { background: var(--card); border-radius: 16px; padding: 24px; border: 1px solid var(--border); }
+    .biz-icon { font-size: 30px; margin-bottom: 12px; }
+    .biz-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .biz-desc { font-size: 13px; color: var(--sub); }
+
+    /* ── BOOST SHOWCASE ── */
+    .boost-showcase { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 40px; }
+    @media(max-width:600px){ .boost-showcase { grid-template-columns: 1fr; } }
+    .boost-tier { background: var(--card2); border-radius: 14px; padding: 20px; border: 1px solid var(--border); text-align: center; }
+    .boost-tier.featured { border-color: #F7CA18; background: rgba(247,202,24,.06); }
+    .boost-duration { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .boost-price { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+    .boost-tier.featured .boost-price { color: #F7CA18; }
+    .boost-desc { font-size: 12px; color: var(--muted); }
+    .boost-badge { display: inline-block; font-size: 10px; font-weight: 700; background: #F7CA18; color: #000; padding: 2px 8px; border-radius: 999px; margin-bottom: 10px; }
+
+    /* ── TEMPLATE DEMO ── */
+    .template-demo { background: var(--card); border-radius: 20px; padding: 28px; border: 1px solid var(--border); max-width: 480px; }
+    .tpl-row { display: flex; align-items: center; gap: 12px; }
+    .tpl-emoji-box { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+    .tpl-info { flex: 1; }
+    .tpl-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .tpl-schedule { font-size: 12px; color: var(--sub); }
+    .tpl-stars { font-size: 11px; color: #F7CA18; margin-top: 3px; }
+    .tpl-price { font-size: 13px; font-weight: 700; color: var(--green); }
+    .tpl-orig { font-size: 11px; color: var(--muted); text-decoration: line-through; }
+    .tpl-btns { display: flex; border-top: 1px solid var(--border); margin-top: 16px; }
+    .tpl-btn { flex: 1; text-align: center; padding: 10px; font-size: 13px; font-weight: 700; color: var(--sub); cursor: pointer; transition: color .2s; }
+    .tpl-btn.boost { color: #F7CA18; }
+    .tpl-btn:hover { color: var(--text); }
+    .tpl-btn-div { width: 1px; background: var(--border); }
+    .active-badge { background: rgba(34,197,94,.1); color: var(--green); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+
+    /* ── RATINGS ── */
+    .ratings-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px; }
+    @media(max-width:600px){ .ratings-row { grid-template-columns: 1fr; } }
+    .rating-card { background: var(--card); border-radius: 16px; padding: 20px; border: 1px solid var(--border); }
+    .rating-user { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .rating-deal { font-size: 12px; color: var(--sub); margin-bottom: 8px; }
+    .rating-stars { font-size: 16px; color: #F7CA18; margin-bottom: 8px; }
+    .rating-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,.1); color: var(--green); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+
+    /* ── CTA ── */
+    .cta-section { padding: 100px 0; text-align: center; position: relative; overflow: hidden; }
+    .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(230,51,0,.14) 0%, transparent 70%); pointer-events: none; }
+    .cta-section h2 { font-size: clamp(28px,5vw,52px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .cta-section p { font-size: 17px; color: var(--sub); margin-bottom: 40px; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+
+    /* ── SECTION DIVIDER ── */
+    .divider { height: 1px; background: var(--border); }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>Flash<em>Sale</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#ako">Ako to funguje</a>
+      <a href="#typy">Typy dealov</a>
+      <a href="#biznisy">Pre podniky</a>
+      <a href="#download">Stiahnuť</a>
+    </div>
+    <a href="#download" class="nav-cta">App Store</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="download">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-badge">⚡ Dostupné na iOS</div>
+    <h1>Zľavy, ktoré<br><span>vyprchajú.</span></h1>
+    <p class="hero-sub">FlashSale prináša exkluzívne časovo obmedzené ponuky od podnikov vo tvojom okolí. Ušetri až 52 % — kým sú ešte dostupné.</p>
+    <div class="hero-btns">
+      <a href="#" class="apple-badge">
+        <svg width="22" height="27" viewBox="0 0 24 24" fill="#000"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div>
+          <span class="small">Stiahnuť z</span>
+          <span class="big">App Store</span>
+        </div>
+      </a>
+      <a href="#ako" class="btn-ghost">Ako to funguje ↓</a>
+    </div>
+
+    <!-- Live deal cards demo -->
+    <div class="deals-demo" id="dealsDemo"></div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section style="padding: 0 0 72px;">
+  <div class="wrap">
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-num">52%</div>
+        <div class="stat-label">Maximálna zľava</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Typy dealov</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">⚡</div>
+        <div class="stat-label">Reálny čas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">QR</div>
+        <div class="stat-label">Okamžité uplatnenie</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Ako to funguje -->
+<section class="section" id="ako">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Návod</div>
+      <h2 class="section-title">Jednoduché pre zákazníka.<br>Výhodné pre podnik.</h2>
+      <p class="section-sub">Dve strany jednej platformy — obe fungujú hladko.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-side">
+        <div class="how-side-label">👤 Zákazník</div>
+        <div class="how-step">
+          <div class="how-num accent">1</div>
+          <div>
+            <h4>Otvor mapu alebo zoznam</h4>
+            <p>Vidíš živé dealy vo svojom okolí — s odpočtom, cenou a percento zľavy.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num accent">2</div>
+          <div>
+            <h4>Kúp deal</h4>
+            <p>Zaplatíš jedným klepnutím. Dostaneš QR voucher platný v podnik.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num accent">3</div>
+          <div>
+            <h4>Ukáž QR kód</h4>
+            <p>Prídeš do podniku, ukážeš kód a obsluha ho naskenuje. Hotovo.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num accent">4</div>
+          <div>
+            <h4>Zarob XP a odznaky</h4>
+            <p>Za každý uplatnený deal získavaš XP, rankuješ sa a zbieraš odmeny.</p>
+          </div>
+        </div>
+      </div>
+      <div class="how-side">
+        <div class="how-side-label">🏪 Podnik</div>
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <div>
+            <h4>Vytvor profil podniku</h4>
+            <p>Vyplníš adresu, kategóriu, fakturačné údaje a IBAN raz — a hotovo.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <div>
+            <h4>Zverejni deal</h4>
+            <p>Nastavíš emoji, farbu, cenu, zľavu a počet kusov. Zákazníci ho hneď vidia.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <div>
+            <h4>Skenuj vouchery</h4>
+            <p>QR kódom alebo zadaním tokenu overíš každý voucher priamo v predajni.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">4</div>
+          <div>
+            <h4>Dostaneš výplatu</h4>
+            <p>Platíš len za uplatnené vouchery. Žiadne riziko — peniaze chodia na tvoj IBAN.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Typy dealov -->
+<section class="section" id="typy">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Typy dealov</div>
+      <h2 class="section-title">Štyri spôsoby<br>ako predávať</h2>
+      <p class="section-sub">Každý typ je navrhnutý pre iný biznis model a typ ponuky.</p>
+    </div>
+    <div class="types-grid">
+      <div class="type-card">
+        <div class="type-tag" style="background:rgba(230,51,0,.15);color:#E63300;">⚡ Flash</div>
+        <div class="type-name">Flash deal</div>
+        <div class="type-desc">Ponuka platí niekoľko hodín — maximálny tlak na rozhodnutie. Ideálne pre reštaurácie s voľnou kapacitou dnes poobede.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-tag" style="background:rgba(22,163,74,.15);color:#16A34A;">🗓 Slot</div>
+        <div class="type-name">Slot deal</div>
+        <div class="type-desc">Zákazník kúpi voucher teraz, príde kedy mu vyhovuje. Výborné pre masáže, kaderníctva a rezervačné služby.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-tag" style="background:rgba(217,119,6,.15);color:#D97706;">📣 Promo</div>
+        <div class="type-name">Promo deal</div>
+        <div class="type-desc">Krátkodobá akcia platná do vypredania zásob. Ideálna pre čerpacie stanice, obchody alebo sezónne zľavy.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-tag" style="background:rgba(124,58,237,.15);color:#7C3AED;">🎫 Pass</div>
+        <div class="type-name">Pass deal</div>
+        <div class="type-desc">Permanentka alebo viacnásobný vstup za výhodnú cenu. Vhodné pre fitnescentrá, bazény alebo coworking.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Pre biznisy -->
+<section class="section" id="biznisy">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Pre podniky</div>
+      <h2 class="section-title">Všetko čo podnik potrebuje</h2>
+      <p class="section-sub">Dashboard, šablóny, hodnotenia aj boost — priamo v mobile.</p>
+    </div>
+
+    <div class="biz-grid">
+      <div class="biz-card">
+        <div class="biz-icon">🔁</div>
+        <div class="biz-title">Opakujúce sa šablóny</div>
+        <div class="biz-desc">Nastav deal raz — každý deň Po–Pi o 11:00 sa automaticky spustí rovnaká ponuka bez toho, aby si musel čokoľvek robiť.</div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">🚀</div>
+        <div class="biz-title">Boost dealu</div>
+        <div class="biz-desc">Zvýrazni svojich deal na vrchu zoznamu. Zákazníci ťa uvidia skôr. Boost na 24 hodín, 3 dni alebo 7 dní.</div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">⭐</div>
+        <div class="biz-title">Hodnotenia zákazníkov</div>
+        <div class="biz-desc">Po uplatnení voucheru zákazník ohodnotí zážitok hviezdičkami. Priemerné hodnotenie vidíš priamo na karte dealu.</div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">📊</div>
+        <div class="biz-title">Prehľad a štatistiky</div>
+        <div class="biz-desc">7-dňový graf tržieb, KPI ukazatele, top dealy a konverzný lievik — všetko na jednom mieste.</div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">🎟</div>
+        <div class="biz-title">Správa objednávok</div>
+        <div class="biz-desc">Uplatnené vouchery prehľadne zoradené. Overenie tokenom alebo QR kódom priamo v predajni za sekundy.</div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">💳</div>
+        <div class="biz-title">Automatické výplaty</div>
+        <div class="biz-desc">Platíš len za reálne uplatnené vouchery. Výplata chodieva týždenne alebo mesačne priamo na IBAN.</div>
+      </div>
+    </div>
+
+    <!-- Template demo -->
+    <div style="display:flex;gap:40px;flex-wrap:wrap;margin-top:60px;align-items:flex-start;">
+      <div style="flex:1;min-width:280px;">
+        <h3 style="font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:10px;">Šablóna — nastav raz, bežíš vždy</h3>
+        <p style="color:var(--sub);font-size:14px;margin-bottom:24px;">Podnik nastaví pravidelný deal — čas spustenia, dni v týždni, cenu a zľavu. Systém ho automaticky aktivuje každý deň.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;color:var(--sub);font-size:14px;"><span style="color:var(--green);">✓</span> Žiadne každodenné manuálne zadávanie</div>
+          <div style="display:flex;align-items:center;gap:10px;color:var(--sub);font-size:14px;"><span style="color:var(--green);">✓</span> Šablónu môžeš kedykoľvek pozastaviť</div>
+          <div style="display:flex;align-items:center;gap:10px;color:var(--sub);font-size:14px;"><span style="color:var(--green);">✓</span> Každá šablóna má vlastné hodnotenie</div>
+          <div style="display:flex;align-items:center;gap:10px;color:var(--sub);font-size:14px;"><span style="color:var(--green);">✓</span> Boost zapneš jedným klepnutím</div>
+        </div>
+      </div>
+      <div class="template-demo">
+        <div class="tpl-row">
+          <div class="tpl-emoji-box" style="background:#FF6B6B;">🍕</div>
+          <div class="tpl-info">
+            <div class="tpl-title">Pizza Napoletana</div>
+            <div class="tpl-schedule">Jedlo · Po, Ut, St, Št, Pi · 11:00–13:00</div>
+            <div class="tpl-stars">★★★★★ <span style="color:var(--muted);font-size:11px;">4.8 (34)</span></div>
+          </div>
+          <div style="text-align:right;">
+            <div class="active-badge">● Aktívna</div>
+            <div style="margin-top:6px;">
+              <div class="tpl-orig">18€</div>
+              <div class="tpl-price">8.60€</div>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-btns">
+          <div class="tpl-btn">Pozastaviť</div>
+          <div class="tpl-btn-div"></div>
+          <div class="tpl-btn boost">🚀 Boost</div>
+          <div class="tpl-btn-div"></div>
+          <div class="tpl-btn" style="color:#F87171;">Zmazať</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boost tiers -->
+    <div style="margin-top:60px;">
+      <h3 style="font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;text-align:center;">🚀 Boost — viac zákazníkov za pár eur</h3>
+      <p style="color:var(--sub);font-size:14px;text-align:center;margin-bottom:0;">Tvoj deal sa zobrazí na vrchu zoznamu a na mape.</p>
+      <div class="boost-showcase">
+        <div class="boost-tier">
+          <div class="boost-duration">24 hodín</div>
+          <div class="boost-price">2,99 €</div>
+          <div class="boost-desc">Ideálne na otestovanie</div>
+        </div>
+        <div class="boost-tier featured">
+          <div class="boost-badge">Najpopulárnejší</div>
+          <div class="boost-duration">3 dni</div>
+          <div class="boost-price">5,99 €</div>
+          <div class="boost-desc">Dobrý pomer ceny a dosahu</div>
+        </div>
+        <div class="boost-tier">
+          <div class="boost-duration">7 dní</div>
+          <div class="boost-price">9,99 €</div>
+          <div class="boost-desc">Maximálna viditeľnosť</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ratings -->
+    <div style="margin-top:60px;">
+      <h3 style="font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;text-align:center;">⭐ Hodnotenia budujú dôveru</h3>
+      <p style="color:var(--sub);font-size:14px;text-align:center;margin-bottom:0;">Zákazníci po uplatnení ohodnotia zážitok. Ty vidíš spätnú väzbu v reálnom čase.</p>
+      <div class="ratings-row">
+        <div class="rating-card">
+          <div class="rating-user">@jana_k</div>
+          <div class="rating-deal">Pizza Napoletana · Bistro Roma</div>
+          <div class="rating-stars">★★★★★</div>
+          <div class="rating-badge">✓ Uplatnený voucher</div>
+        </div>
+        <div class="rating-card">
+          <div class="rating-user">@peter_v</div>
+          <div class="rating-deal">Masáž 60 min · Relax Studio</div>
+          <div class="rating-stars">★★★★<span style="color:var(--border);">★</span></div>
+          <div class="rating-badge">✓ Uplatnený voucher</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="wrap" style="position:relative;">
+    <div class="hero-badge" style="margin-bottom:20px;">⚡ Dostupné na iOS</div>
+    <h2>Začni šetriť<br><span style="color:var(--flash);">ešte dnes.</span></h2>
+    <p>Stovky dealov vo tvojom meste. Každý deň nové ponuky.</p>
+    <a href="#" class="apple-badge" style="display:inline-flex;">
+      <svg width="22" height="27" viewBox="0 0 24 24" fill="#000"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <div>
+        <span class="small">Stiahnuť z</span>
+        <span class="big">App Store</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap footer-inner">
+    <a href="#" class="logo" style="font-size:15px;">
+      <div class="logo-icon" style="width:26px;height:26px;font-size:13px;">⚡</div>
+      <span>Flash<em>Sale</em></span>
+    </a>
+    <div class="footer-links">
+      <a href="#">Súkromie</a>
+      <a href="#">Podmienky</a>
+      <a href="#">Pre podniky</a>
+    </div>
+    <div class="footer-copy">© 2026 FlashSale</div>
+  </div>
+</footer>
+
+<script>
+  // Deal data
+  const DEALS = [
+    { emoji:'🍕', title:'Pizza Napoletana', biz:'Bistro Roma', dist:'0.3 km', orig:18, price:8.60, disc:52, qty:18, total:25, endOffset: 1*3600+47*60+22, type:'flash', typeLabel:'⚡ Flash', typeColor:'#E63300', bgColor:'#FF6B6B', watching:12 },
+    { emoji:'💆', title:'Masáž 60 min', biz:'Relax Studio', dist:'1.1 km', orig:60, price:36, disc:40, qty:2, total:20, endOffset: 23*60+10, type:'slot', typeLabel:'🗓 Slot', typeColor:'#16A34A', bgColor:'#26de81', watching:7 },
+    { emoji:'✂️', title:'Strih + Úprava brady', biz:'Barbershop Havran', dist:'0.7 km', orig:25, price:15, disc:40, qty:3, total:10, endOffset: 2*3600+15*60, type:'flash', typeLabel:'⚡ Flash', typeColor:'#E63300', bgColor:'#45aaf2', watching:5 },
+  ]
+
+  const startTs = Date.now()
+
+  function fmt(secs) {
+    if (secs <= 0) return '00:00'
+    const h = Math.floor(secs / 3600)
+    const m = Math.floor((secs % 3600) / 60)
+    const s = secs % 60
+    if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+  }
+
+  function renderDeals() {
+    const container = document.getElementById('dealsDemo')
+    container.innerHTML = DEALS.map((d, i) => `
+      <div class="deal-card" id="card${i}">
+        <div class="deal-emoji-area" style="background:${d.bgColor}22;">
+          <span class="deal-emoji">${d.emoji}</span>
+          <div class="type-badge" style="background:${d.typeColor}22;color:${d.typeColor};">${d.typeLabel}</div>
+        </div>
+        <div class="deal-body">
+          <div class="deal-title-row">
+            <span class="deal-title">${d.title}</span>
+            <span class="disc-badge">−${d.disc}%</span>
+          </div>
+          <div class="deal-biz">${d.biz} · ${d.dist}</div>
+          <div class="price-row">
+            <span class="orig-price">${d.orig}€</span>
+            <span class="final-price">${d.price.toFixed(2)} €</span>
+            <div class="timer-wrap">
+              <div class="timer-dot" style="background:${d.endOffset < 1800 ? '#DC2626' : '#FF6B00'};"></div>
+              <span class="timer-text" id="timer${i}" style="color:${d.endOffset < 1800 ? '#DC2626' : '#FF6B00'};">--:--</span>
+            </div>
+          </div>
+          <div class="progress-bg">
+            <div class="progress-bar" style="width:${(d.qty/d.total*100).toFixed(0)}%;background:${d.endOffset < 1800 ? '#DC2626' : '#16A34A'};"></div>
+          </div>
+          <div class="stock-text">${d.qty} z ${d.total} dealov zostáva</div>
+          <div class="watching">👁 ${d.watching} sleduje</div>
+        </div>
+      </div>
+    `).join('')
+  }
+
+  function tick() {
+    const elapsed = Math.floor((Date.now() - startTs) / 1000)
+    DEALS.forEach((d, i) => {
+      const rem = Math.max(0, d.endOffset - elapsed)
+      const el = document.getElementById(`timer${i}`)
+      if (el) el.textContent = fmt(rem)
+    })
+  }
+
+  renderDeals()
+  tick()
+  setInterval(tick, 1000)
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1)
+      const el = document.getElementById(id)
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior:'smooth', block:'start' }) }
+    })
+  })
+</script>
+</body>
+</html>
