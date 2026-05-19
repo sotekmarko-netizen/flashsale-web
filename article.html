@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rozhovor: Marko Sotek o FlashSale — „Chcel som aby podniky mohli predávať zostatok dňa"</title>
+  <meta name="description" content="Marko Sotek stojí za platformou FlashSale, ktorá prepája miestne podniky so zákazníkmi v reálnom čase." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080808; --card: #141414; --text: #F2F2F2; --sub: #9A9A9A;
+      --muted: #5A5A5A; --border: #222; --flash: #E63300; --wrap: 720px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-in { display: flex; align-items: center; height: 56px; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 9px; font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
+    .logo-ic { width: 28px; height: 28px; border-radius: 7px; overflow: hidden; }
+    .logo-ic img { width: 100%; height: 100%; object-fit: cover; }
+    .logo em { color: var(--flash); font-style: normal; }
+    .nav-back { margin-left: auto; font-size: 13px; color: var(--sub); display: flex; align-items: center; gap: 5px; transition: color .2s; }
+    .nav-back:hover { color: var(--text); }
+
+    /* HERO */
+    .art-hero { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+    .art-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: var(--flash); background: rgba(230,51,0,.08); border: 1px solid rgba(230,51,0,.18); padding: 4px 12px; border-radius: 999px; margin-bottom: 24px; text-transform: uppercase; }
+    .art-title { font-size: clamp(26px, 4vw, 40px); font-weight: 900; letter-spacing: -1.2px; line-height: 1.15; margin-bottom: 20px; }
+    .art-title span { color: var(--flash); }
+    .art-lead { font-size: 17px; color: var(--sub); line-height: 1.7; margin-bottom: 32px; }
+    .art-meta { display: flex; align-items: center; gap: 16px; }
+    .art-author { display: flex; align-items: center; gap: 10px; }
+    .art-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .art-author-name { font-size: 13px; font-weight: 700; }
+    .art-author-role { font-size: 12px; color: var(--muted); }
+    .art-date { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+    /* ARTICLE BODY */
+    .art-body { padding: 52px 0 80px; }
+    .art-body p { font-size: 16.5px; line-height: 1.8; color: #D8D8D8; margin-bottom: 28px; }
+
+    .qa { margin-bottom: 44px; }
+    .q { font-size: 17px; font-weight: 800; color: var(--text); letter-spacing: -.2px; margin-bottom: 14px; padding-left: 18px; border-left: 3px solid var(--flash); line-height: 1.45; }
+    .a { font-size: 16.5px; line-height: 1.8; color: #CCCCCC; padding-left: 18px; }
+
+    .art-divider { height: 1px; background: var(--border); margin: 48px 0; }
+
+    .art-quote { background: var(--card); border-radius: 16px; padding: 32px; border: 1px solid #222; margin: 44px 0; position: relative; }
+    .art-quote::before { content: '\201E'; position: absolute; top: -10px; left: 24px; font-size: 80px; color: var(--flash); line-height: 1; font-family: Georgia, serif; opacity: .6; }
+    .art-quote p { font-size: 20px; font-weight: 700; letter-spacing: -.3px; line-height: 1.5; color: var(--text); font-style: italic; padding-top: 16px; }
+
+    /* CTA */
+    .art-cta { background: var(--card); border-radius: 20px; padding: 36px; border: 1px solid #222; text-align: center; margin-top: 60px; }
+    .art-cta h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; letter-spacing: -.3px; }
+    .art-cta p { font-size: 14px; color: var(--sub); margin-bottom: 24px; }
+    .art-cta a { display: inline-flex; align-items: center; gap: 9px; background: #fff; color: #000; padding: 11px 24px; border-radius: 12px; font-weight: 700; font-size: 14px; transition: transform .2s, box-shadow .2s; }
+    .art-cta a:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,255,255,.1); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 28px 0; }
+    .ft-in { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    .ft-links { display: flex; gap: 22px; }
+    .ft-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
+    .ft-links a:hover { color: var(--sub); }
+    .ft-copy { font-size: 12px; color: var(--muted); }
+
+    /* REVEAL */
+    .rv { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .rv.vis { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo">
+      <div class="logo-ic"><img src="icon.png" alt="FlashSale" /></div>
+      <span>Flash<em>Sale</em></span>
+    </a>
+    <a href="index.html" class="nav-back">← Späť na hlavnú</a>
+  </div>
+</nav>
+
+<article>
+  <div class="wrap">
+
+    <header class="art-hero rv">
+      <div class="art-tag">⚡ Rozhovor</div>
+      <h1 class="art-title">„Chcel som aby podniky mohli<br>predávať zostatok dňa —<span> nie ho vyhodiť."</span></h1>
+      <p class="art-lead">Marko Sotek stojí za platformou FlashSale, ktorá prepája miestne podniky so zákazníkmi v reálnom čase. Nie cez katalógy a týždňové kampane, ale okamžite — cez mapu, mobilný voucher a jednoduché rozhranie.</p>
+      <div class="art-meta">
+        <div class="art-author">
+          <div class="art-avatar">✍️</div>
+          <div>
+            <div class="art-author-name">Redakcia FlashSale</div>
+            <div class="art-author-role">Rozhovor</div>
+          </div>
+        </div>
+        <div class="art-date">Máj 2026</div>
+      </div>
+    </header>
+
+    <div class="art-body">
+
+      <div class="qa rv">
+        <div class="q">FlashSale — názov hovorí za seba. Kde sa vzala myšlienka?</div>
+        <div class="a">Bolo to celkom prosté. Sedel som v reštaurácii okolo druhej poobede — prázdna jedáleň, kuchár za pultom, svetlá svietia do prázdna. Tí ľudia mali plnú kuchyňu, suroviny, kapacitu. Stačilo by hodiť do mobilu jednu ponuku: „dnes pizza za polovicu, zostatok dňa" — a niekto by prišiel. Problém bol, že na to neexistovalo nič jednoduché a okamžité. Tak som sa rozhodol to vytvoriť.</div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="qa rv">
+        <div class="q">Zľavové portály tu predsa boli roky. V čom je FlashSale iný?</div>
+        <div class="a">Klasický zľavový portál funguje ako statický katalóg. Podnik pripraví ponuku, čaká dni, zákazník si kúpi kupón a príde o mesiac neskôr. To nie je skutočná flexibilita. FlashSale pracuje v reálnom čase — podnik má práve teraz voľnú kapacitu a chce ju predať dnes. Zákazník vidí ponuku na mape, kúpi ju za niekoľko sekúnd cez Apple Pay, príde do podniku a ukáže QR kód. Celý proces trvá minúty. Nie dni.</div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="qa rv">
+        <div class="q">Koľko práce to dá samotnému podniku?</div>
+        <div class="a">To bolo od začiatku jadro celého projektu. Majiteľ reštaurácie alebo salónu nemá byť marketér ani technický expert. V aplikácii vyberie emoji, zadá cenu, zľavu, počet kusov a platnosť ponuky — a deal je okamžite viditeľný na mape zákazníkov v okolí. Ak má podnik rovnakú ponuku každý deň, napríklad obedné menu od jedenástej do tretej, nastaví si šablónu a systém ju spúšťa automaticky. Bez akéhokoľvek ďalšieho zásahu.</div>
+      </div>
+
+      <div class="art-quote rv">
+        <p>Podnik predá to, čo by inak stratil. Zákazník získa reálnu hodnotu za menej peňazí. Nie je tu žiadna strana ktorá by vyšla naprázdno.</p>
+      </div>
+
+      <div class="qa rv">
+        <div class="q">Prečo štyri typy dealov namiesto jedného univerzálneho formátu?</div>
+        <div class="a">Pretože každý biznis funguje podľa inej logiky. Reštaurácia potrebuje predať voľný stôl dnes — na to slúži Flash deal s platnosťou niekoľkých hodín. Masérka alebo kaderník chcú predať termín vopred, ale zákazník príde kedy mu vyhovuje — to je Slot. Čerpacia stanica robí akciovú cenu na pohonné hmoty do konca dňa — Promo. Fitcentrum predáva permanentky s dlhodobou platnosťou — Pass. Jeden formát by niektorých obmedzoval, štyri dávajú každému presne to čo potrebuje.</div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="qa rv">
+        <div class="q">Aký potenciál vidíte na trhu?</div>
+        <div class="a">Veľký a stále do veľkej miery nepokrytý. Každý podnik — reštaurácia, kadernícky salón, fitcentrum, čerpacia stanica — prichádza denne o tržby kvôli nevyužitej kapacite. Prázdny stôl o štrnástej, voľný termín na masáž, zostatok tovaru pred zatvárením — to sú peniaze ktoré jednoducho zmiznú. A nejde len o veľké mestá. Toto je každodenná realita tisícok podnikov po celom Slovensku. FlashSale tieto straty zachytáva a premieňa ich na hodnotu — pre podnik aj zákazníka.</div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="qa rv">
+        <div class="q">Čo konkrétne zákazník získa oproti bežnému nakupovaniu?</div>
+        <div class="a">Reálne zľavy — nie marketingové, ale také kde podnik skutočne potrebuje predať a zákazník to cíti na peňaženke. Úspora môže dosiahnuť aj päťdesiat percent. Voucher dostane priamo do mobilu ako QR kód, ktorý uplatní okamžite na mieste. Žiadne čakanie, žiadne vytlačené kupóny, žiadne skryté podmienky. A navyše vidí na mape v reálnom čase čo je dostupné práve teraz v jeho okolí — to je niečo čo doteraz jednoducho neexistovalo.</div>
+      </div>
+
+      <div class="art-divider"></div>
+
+      <div class="qa rv">
+        <div class="q">Čo považujete za najsilnejšiu stránku celého modelu?</div>
+        <div class="a">Obojstranný efekt. Podnik predá to, čo by inak stratil. Zákazník získa reálnu hodnotu za menej peňazí. Nie je tu žiadna strana ktorá by vyšla naprázdno. A čím viac podnikov na platforme je, tým je zaujímavejšia pre zákazníkov — a naopak. Je to model ktorý pri správnom rozbehu rastie organicky sám zo seba.</div>
+      </div>
+
+      <div class="art-quote rv">
+        <p>Platforma ktorá premení nevyužitú kapacitu podniku na okamžitú tržbu — a zákazníkovi ušetrí peniaze, ktoré by inak nikdy nezískal.</p>
+      </div>
+
+      <div class="art-cta rv">
+        <h3>Vyskúšaj FlashSale</h3>
+        <p>Dostupné na iOS. Dealy vo tvojom okolí v reálnom čase.</p>
+        <a href="#">
+          <svg width="18" height="22" viewBox="0 0 24 24" fill="#000"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Stiahnuť z App Store
+        </a>
+      </div>
+
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap ft-in">
+    <a href="index.html" class="logo" style="font-size:15px;">
+      <div class="logo-ic" style="width:26px;height:26px;"><img src="icon.png" alt="FlashSale" /></div>
+      <span>Flash<em>Sale</em></span>
+    </a>
+    <div class="ft-links">
+      <a href="privacy.html">Súkromie</a>
+      <a href="terms.html">Podmienky</a>
+    </div>
+    <div class="ft-copy">© 2026 FlashSale</div>
+  </div>
+</footer>
+
+<script>
+  const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis') }), { threshold: 0.07 })
+  document.querySelectorAll('.rv').forEach(el => ro.observe(el))
+</script>
+</body>
+</html>
